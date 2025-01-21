@@ -1,13 +1,13 @@
 ## Trabalho 2 - Sistemas Operacionais
 
+### Implementar simulador de gerenciamento de arquivos com interpretador de comandos.
+
 #### Membros:
 - João Ricardo Teixeira
 - Rodrigo Soares
 - Mariana Dutra
 - Julia Vieira
 - Natan Silva
-
-### Implementar simulador de gerenciamento de arquivos com interpretador de comandos.
 
 #### Requisitos:
 - Simular diretórios (hierarquia) e aquivos (conteúdo).

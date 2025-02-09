@@ -1,14 +1,166 @@
-public class Application {
+import java.lang.reflect.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
+public class Application implements Constants{
+	
+	private static boolean exit = false;
+	
 	public static void main(String[] args){
-
+		
+		/* Inicialização */
+		User currentUser;
+		Scanner input = new Scanner(System.in);
 		VirtualFileSystem vfs = new VirtualFileSystem(4096);
-		VirtualFileSystem.Inode node = vfs.new Inode(0, 0);
 
-		node.setName("documento.txt");
-		node.setAbsolutePath("/");
-		node.setPermissions(777);
-		node.dump();
+		String cmdline;
+		String[] arguments;
+		
+		
+		while(!exit) {
+			
+			try {
+				
+				System.out.print("username@computer:~$ ");
+				cmdline = input.nextLine();
+				arguments = cmdline.split(" ");
+				
+				if (arguments.length == 2 && arguments[1].contains("--help")){
+					Tools.help(arguments[0]);
+				} else {
+					execute(arguments);
+				}
+
+			}
+			catch (NoSuchElementException e) { /* para sair ao pressionar CTRL + C */
+				exit = true; 
+				break;
+			}
+			
+			
+			if (exit) break;
+			
+		}
+		
+		System.exit(0);
+	}
+	
+	
+	public static void execute(String[] arguments){
+		try {
+			Method method;
+			
+			if (arguments.length == 1){
+				/* busca métodos sem argumentos */
+				method = Application.class.getMethod(arguments[0]);
+				method.invoke(Application.class);
+			} else {
+				/* busca métodos com argumentos */
+				method = Application.class.getMethod(arguments[0], String[].class);
+				method.invoke(Application.class, (Object) arguments);
+			}
+		} catch(NoSuchMethodException e){
+			System.out.println("method not found");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/* --- João R --- */
+
+	public static void clear(){
+		Tools.clearScreen();
 	}
 
+	public static void cls(){
+		clear();
 	}
+	
+	public static void diff(String ... args){
+	}
+	
+	public static void echo(String ... args){
+	}
+	
+	public static void exit(){
+		exit = true;
+	}
+	
+	public static void ls(String ... args){
+	}
+	
+	public static void mkdir(String ... args){
+	}
+	
+	public static void pwd(){
+	}
+	
+	public static void tail(String ... args){
+	}
+	
+	/* --- Julia --- */
+	public static void find(String ... args){
+	}
+	
+	public static void rmdir(String ... args){
+	}
+	
+	public static void stat(String ... args){
+	}
+	
+	public static void wc(String ... args){
+	}
+	
+	public static void zip(String ... args){
+	}
+	
+	/* --- Mariana --- */
+	public static void chmod(String ... args){
+	}
+	
+	public static void cp(String ... args){
+	}
+	
+	public static void cd(String ... args){
+	}
+	
+	public static void rename(String ... args){
+	}
+	
+	public static void rm(String ... args){
+	}
+	
+	/* --- Nathan --- */
+	public static void cat(String ... args){
+	}
+	
+	public static void du(String ... args){
+	}
+	
+	public static void grep(String ... args){
+	}
+	
+	public static void tree(){
+	}
+	
+	public static void unzip(String ... args){
+	}
+	
+	/* --- Rodrigo --- */
+	public static void chown(String ... args){
+	}
+	
+	public static void head(String ... args){
+	}
+	
+	public static void history(){
+	}
+	
+	public static void mv(String ... args){
+	}
+	
+	public static void touch(String ... args){
+	}
+	
+}

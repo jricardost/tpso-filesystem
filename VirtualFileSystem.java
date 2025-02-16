@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 public class VirtualFileSystem implements Constants {
     
+    
     final int MAX_SIZE;
     
     final String ROOT_FOLDER = "/";
@@ -35,6 +36,14 @@ public class VirtualFileSystem implements Constants {
             this.type = type;
             this.creationDate = Tools.timeStamp("MMM d HH:mm");
             this.modificationDate = creationDate;
+        }
+
+        public int getPermissions(){
+            return permissions;
+        }
+
+        public void setPermissions(){
+            
         }
     }   
     

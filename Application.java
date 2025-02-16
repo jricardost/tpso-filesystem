@@ -6,22 +6,27 @@ public class Application implements Constants{
 	
 	private static boolean exit = false;
 	
+	static User currentUser;	
+	static Scanner input;
+	static VirtualFileSystem vfs;
+	
+	
 	public static void main(String[] args){
 		
-		/* Inicialização */
-		User currentUser;
-		Scanner input = new Scanner(System.in);
-		VirtualFileSystem vfs = new VirtualFileSystem(4096);
-
+		/* Ambiente */
+		String envroot = "> ";
 		String cmdline;
 		String[] arguments;
 		
 		
+		/* Inicialização */
+		input = new Scanner(System.in);
+		vfs = new VirtualFileSystem(4096);
+		
 		while(!exit) {
 			
 			try {
-				
-				System.out.print("username@computer:~$ ");
+				System.out.print(envroot);
 				cmdline = input.nextLine();
 				arguments = cmdline.split(" ");
 				
@@ -30,24 +35,25 @@ public class Application implements Constants{
 				} else {
 					execute(arguments);
 				}
-
+				
 			}
 			catch (NoSuchElementException e) { /* para sair ao pressionar CTRL + C */
 				exit = true; 
 				break;
 			}
 			
-			
 			if (exit) break;
 			
 		}
 		
+		input.close();
+		
 		System.exit(0);
 	}
 	
-	
 	public static void execute(String[] arguments){
 		try {
+			
 			Method method;
 			
 			if (arguments.length == 1){
@@ -68,11 +74,11 @@ public class Application implements Constants{
 	}
 	
 	/* --- João R --- */
-
+	
 	public static void clear(){
 		Tools.clearScreen();
 	}
-
+	
 	public static void cls(){
 		clear();
 	}

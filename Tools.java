@@ -18,7 +18,7 @@ public final class Tools implements Constants {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-    }  
+    }
     
     public static String timeStamp() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", new Locale("en", "US"));

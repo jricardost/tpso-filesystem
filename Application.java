@@ -1,5 +1,8 @@
 import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -207,7 +210,83 @@ public class Application implements Constants{
 		}
 	}
 	
-	public static void tree(){
+	public static void tree() {
+		printTree(vfs.currentDirectory, 0, true, new boolean[MAX_TREE_DEPTH]);
+	}
+	/*
+	 * @param depth: Profundidade de diretórios atual(começa em 0)
+	 *              Usado pra definir a identação da árvore
+	 * @param isLastEntry: Indica se o node atual é o último de seu diretório
+	 *                    Usado pra definir de vai ser usado o caracter "└" (true) ou "├" (false)
+	 * @param dirsDepths: Array que controla onde os caracteres verticais "│" são exibidos.
+	 *                   Cada índice representa uma profundidade na árvore:
+	 *                   - Se 'dirsDepths[3]' for true, um "│" será desenhado na
+	 *                     profundidade 3, indicando que há diretórios subsequentes
+	 *                     nesse nível
+	 *                   - Se 'dirsDepths[3]' for false, nenhum "│" será desenhado
+	 *                     na profundidade 3, pois não há mais diretórios ativos nela
+	 *   Profundidade:   0   1   2   3
+	 *                   └───root
+	 *                       ├───dir1
+	 *                       │       file1
+	 *                       │       file2
+	 *                       └───dir2
+	 *                               file1
+	 */
+	private static void printTree(VirtualFileSystem.Inode node, int depth, boolean isLastEntry, boolean[] dirsDepths) {
+		if (node == null) {
+			return;
+		}
+
+		if (depth >= MAX_TREE_DEPTH) {
+			System.out.println("Max tree depth of " + MAX_TREE_DEPTH + " reached.");
+			return;
+		}
+
+		for (int i = 0; i < depth; i++) {
+			if (dirsDepths[i]) {
+				System.out.print("│   ");
+			}
+			else {
+				System.out.print("    ");
+			}
+		}
+
+		if (node.type == TYPE_DIRECTORY) {
+			if (isLastEntry) {
+				System.out.print("└");
+				dirsDepths[depth] = false;
+			}
+			else {
+				System.out.print("├");
+			}
+			System.out.printf("───%s\n", node.name);
+
+			VirtualFileSystem.Directory dir = (VirtualFileSystem.Directory) node;
+
+			for(VirtualFileSystem.Inode inode : dir.files.values()) {
+				if (inode.type == TYPE_DIRECTORY && depth + 1 < MAX_TREE_DEPTH) {
+					dirsDepths[depth + 1] = true;
+					break;
+				}
+			}
+
+			List<Map.Entry<Integer, VirtualFileSystem.Inode>> entries = new ArrayList<>(dir.files.entrySet());
+			for (int i = 0; i < entries.size(); i++) {
+				Map.Entry<Integer, VirtualFileSystem.Inode> entry = entries.get(i);
+				printTree(entry.getValue(), depth + 1, (i == entries.size() - 1), dirsDepths);
+			}
+		}
+		else {
+			if (dirsDepths[depth]) {
+				System.out.print("│   ");
+			}
+			else {
+				System.out.print("    ");
+			}
+			System.out.println(node.name);
+		}
+
 	}
 	
 	public static void unzip(String ... args){

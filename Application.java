@@ -160,7 +160,7 @@ public class Application implements Constants{
 	}
 
 	public static void du() {
-        du(vfs.currentDirectory);
+		du(vfs.currentDirectory);
 	}
 
 	public static void du(String ... args) {
@@ -209,7 +209,7 @@ public class Application implements Constants{
 			}
 		}
 	}
-	
+
 	public static void tree() {
 		printTree(vfs.currentDirectory, 0, true, new boolean[MAX_TREE_DEPTH]);
 	}
@@ -287,7 +287,7 @@ public class Application implements Constants{
 			System.out.println(node.name);
 		}
 	}
-	
+
 	public static void unzip(String ... args) {
 		// TODO: depende da implementação do comando zip
 	}

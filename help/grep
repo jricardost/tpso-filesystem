@@ -1,0 +1,7 @@
+usage:
+    grep <pattern <file>
+
+    Search for a pattern in a file and print each line that matches the pattern.
+
+options:
+    no extra options.

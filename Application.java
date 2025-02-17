@@ -160,6 +160,29 @@ public class Application implements Constants{
 	}
 	
 	public static void grep(String ... args){
+		if (args.length < 3) {
+			System.out.println("missing args");
+			System.out.println("use 'grep --help' for more info");
+			return;
+		}
+
+		String pattern = args[1];
+		String filePath = args[2];
+
+		VirtualFileSystem.Inode inode = Tools.findInode(filePath);
+		if (inode == null || inode.type == TYPE_DIRECTORY) {
+			System.out.println("file not found");
+			return;
+		}
+
+		VirtualFileSystem.File file = (VirtualFileSystem.File) inode;
+		String content = new String(file.getContent(), StandardCharsets.UTF_8);
+		String[] lines = content.split("\n");
+		for(String line : lines) {
+			if (line.contains(pattern)) {
+				System.out.println(line);
+			}
+		}
 	}
 	
 	public static void tree(){

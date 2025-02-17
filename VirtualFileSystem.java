@@ -10,6 +10,7 @@ public class VirtualFileSystem implements Constants {
     
     
     HashMap<Integer, Inode> files;
+    Directory currentDirectory;
     
     /* Representa um nó genérico na árvore (Arquivo ou Diretório) */
     /* https://guialinux.uniriotec.br/inode/ */

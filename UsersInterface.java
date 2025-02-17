@@ -19,6 +19,7 @@ public interface UsersInterface {
                 
                 if (data.charAt(0) != '#'){
                     String[] split = data.split(" ");
+                    System.out.println(data);
                 } 
             }
             fscan.close();

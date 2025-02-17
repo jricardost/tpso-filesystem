@@ -2,19 +2,21 @@ import java.lang.reflect.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Application implements Constants{
+public class Application implements Constants {
 	
+	private static final boolean autoRootLogin = false;
 	private static boolean exit = false;
-	
+
 	static User currentUser;	
+	static UserAccountController uac;
 	static Scanner input;
 	static VirtualFileSystem vfs;
 	
+	static String currentDirectory;
 	
 	public static void main(String[] args){
 		
 		/* Ambiente */
-		String envroot = "> ";
 		String cmdline;
 		String[] arguments;
 		
@@ -22,11 +24,23 @@ public class Application implements Constants{
 		/* Inicialização */
 		input = new Scanner(System.in);
 		vfs = new VirtualFileSystem(4096);
+		uac = new UserAccountController();
 		
 		while(!exit) {
+
+
+			while (currentUser == null) {
+				uac.login();
+				currentUser = uac.getCurrentUser();
+
+				if (currentUser != null){
+					Tools.help("welcome");
+				}
+			}
+
 			
 			try {
-				System.out.print(envroot);
+				System.out.print(String.format("%s@tpso:~$ ", currentUser.getName()));
 				cmdline = input.nextLine();
 				arguments = cmdline.split(" ");
 				
@@ -48,7 +62,17 @@ public class Application implements Constants{
 		
 		input.close();
 		
+		clear();
+
 		System.exit(0);
+	}
+
+	public static void login(){
+		uac.login();
+	}
+
+	public static void logout(){
+		uac.logout();
 	}
 	
 	public static void execute(String[] arguments){
@@ -73,6 +97,10 @@ public class Application implements Constants{
 		}
 	}
 	
+	public static void test(){
+
+	}
+
 	/* --- João R --- */
 	
 	public static void clear(){
@@ -94,6 +122,7 @@ public class Application implements Constants{
 	}
 	
 	public static void ls(String ... args){
+
 	}
 	
 	public static void mkdir(String ... args){
@@ -168,5 +197,4 @@ public class Application implements Constants{
 	
 	public static void touch(String ... args){
 	}
-	
 }

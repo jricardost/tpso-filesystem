@@ -2,13 +2,10 @@ import java.lang.String;
 import java.util.HashMap;
 
 public class VirtualFileSystem implements Constants {
-    
-    
+
     final int MAX_SIZE;
-    
     final String ROOT_FOLDER = "/";
-    
-    
+
     HashMap<Integer, Inode> files;
     
     /* Representa um nó genérico na árvore (Arquivo ou Diretório) */
@@ -73,5 +70,13 @@ public class VirtualFileSystem implements Constants {
     
     public VirtualFileSystem(int size){
         this.MAX_SIZE = size;
+    }
+
+    public void initialize(){
+        System.out.println(Application.currentUser.getId());
+    }
+
+    private void loadFromFile(){
+
     }
 }

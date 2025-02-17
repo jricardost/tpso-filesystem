@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.TimeZone;
@@ -54,19 +56,34 @@ public final class Tools implements Constants {
     }
     
     public static void help(String cmd){
+
+        String[] help = readApplicationFile("/help/" + cmd);
+        
+        for (String s : help){
+            System.out.println(s);
+        }
+    }
+    
+    
+    public static String[] readApplicationFile(String path){
         
         try {
-            File helpFile = new File(new File("").getAbsolutePath() + "/help/" + cmd);
-            Scanner fscan = new Scanner(helpFile);
+            ArrayList<String> lines = new ArrayList<String>();
+            File file = new File(new File("").getAbsolutePath() + "/data/root" + path);
+            Scanner fscan = new Scanner(file);
             
             while (fscan.hasNextLine()) {
-                System.out.println(fscan.nextLine());
+                lines.add(fscan.nextLine());
             }
             
             fscan.close();        
-
+            
+            return lines.toArray(new String[lines.size()]);
+            
         } catch (Exception e) {
-               
+            System.out.println(e.getMessage());
         } 
+        
+        return null;
     }
 }

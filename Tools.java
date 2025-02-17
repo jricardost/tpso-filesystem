@@ -57,7 +57,7 @@ public final class Tools implements Constants {
     
     public static void help(String cmd){
 
-        String[] help = readApplicationFile("/help/" + cmd);
+        String[] help = readApplicationFile("/usr/share/man/" + cmd);
         
         for (String s : help){
             System.out.println(s);
@@ -85,5 +85,10 @@ public final class Tools implements Constants {
         } 
         
         return null;
+    }
+
+    public static void motd(){
+        String[] motd = readApplicationFile("/etc/motd");
+        for (String s : motd) System.out.println(s);
     }
 }

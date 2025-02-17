@@ -34,7 +34,7 @@ public class Application implements Constants {
 				currentUser = uac.getCurrentUser();
 
 				if (currentUser != null){
-					Tools.help("welcome");
+					Tools.motd();
 				}
 			}
 

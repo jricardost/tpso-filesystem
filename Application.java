@@ -155,10 +155,32 @@ public class Application implements Constants{
 
 		System.out.println(text);
 	}
-	
-	public static void du(String ... args){
+
+	public static void du() {
+        du(vfs.currentDirectory);
 	}
-	
+
+	public static void du(String ... args) {
+		String path = args[1];
+		VirtualFileSystem.Inode inode = Tools.findInode(path);
+		if (inode == null) {
+			System.out.println("file or folder not found");
+			return;
+		}
+		du(inode);
+	}
+
+	private static void du(VirtualFileSystem.Inode rootNode) {
+		if (rootNode.type == TYPE_FILE) {
+			System.out.printf("%-8d %s%n", rootNode.size, rootNode.absolutePath);
+			return;
+		}
+		VirtualFileSystem.Directory directory = (VirtualFileSystem.Directory) rootNode;
+		for(VirtualFileSystem.Inode node : directory.files.values()) {
+			du(node);
+		}
+	}
+
 	public static void grep(String ... args){
 		if (args.length < 3) {
 			System.out.println("missing args");

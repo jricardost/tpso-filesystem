@@ -69,6 +69,7 @@ public class VirtualFileSystem implements Constants {
         public void setContent(byte[] content){
             this.content = content;
             this.modificationDate = Tools.timeStamp("MMM d HH:mm");
+            this.size = content.length;
         }
 
         public byte[] getContent() {

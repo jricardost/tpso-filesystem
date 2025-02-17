@@ -70,6 +70,10 @@ public class VirtualFileSystem implements Constants {
             this.content = content;
             this.modificationDate = Tools.timeStamp("MMM d HH:mm");
         }
+
+        public byte[] getContent() {
+            return this.content;
+        }
     }
     
     public VirtualFileSystem(int size){

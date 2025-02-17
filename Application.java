@@ -1,4 +1,5 @@
 import java.lang.reflect.*;
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class Application implements Constants{
 		/* Inicialização */
 		input = new Scanner(System.in);
 		vfs = new VirtualFileSystem(4096);
-		
+
 		while(!exit) {
 			
 			try {
@@ -137,8 +138,22 @@ public class Application implements Constants{
 	public static void rm(String ... args){
 	}
 	
-	/* --- Nathan --- */
+	/* --- Natan --- */
 	public static void cat(String ... args){
+		String filePath = args[1];
+		VirtualFileSystem.Inode inode = Tools.findInode(filePath);
+
+		if (inode == null || inode.type == TYPE_DIRECTORY) {
+			System.out.println("file not found");
+			return;
+		}
+
+		VirtualFileSystem.File file = (VirtualFileSystem.File) inode;
+
+		// Converte conteúdo do arquivo de bytes para texto
+		String text = new String(file.getContent(), StandardCharsets.UTF_8);
+
+		System.out.println(text);
 	}
 	
 	public static void du(String ... args){

@@ -2,17 +2,17 @@ import java.lang.reflect.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Application implements Constants {
+public class Application implements Constants, JoaoRicardo, Julia, Mariana, Natan, Rodrigo {
 	
-	private static final boolean autoRootLogin = false;
 	private static boolean exit = false;
-
-	static User currentUser;	
-	static UserAccountController uac;
-	static Scanner input;
-	static VirtualFileSystem vfs;
+	private static boolean skipLogin = true;
 	
 	static String currentDirectory;
+	static User currentUser;	
+	
+	static Scanner input;
+	static VirtualFileSystem vfs;
+	static UserAccountController uac;
 	
 	public static void main(String[] args){
 		
@@ -20,24 +20,18 @@ public class Application implements Constants {
 		String cmdline;
 		String[] arguments;
 		
-		
-		/* Inicialização */
-		input = new Scanner(System.in);
-		vfs = new VirtualFileSystem(4096);
-		uac = new UserAccountController();
+		initialize();
 		
 		while(!exit) {
-
-
+			
 			while (currentUser == null) {
 				uac.login();
 				currentUser = uac.getCurrentUser();
-
+				
 				if (currentUser != null){
 					Tools.motd();
 				}
 			}
-
 			
 			try {
 				System.out.print(String.format("%s@tpso:~$ ", currentUser.getName()));
@@ -63,16 +57,14 @@ public class Application implements Constants {
 		input.close();
 		
 		clear();
-
+		
 		System.exit(0);
 	}
-
-	public static void login(){
-		uac.login();
-	}
-
-	public static void logout(){
-		uac.logout();
+	
+	private static void initialize(){
+		input = new Scanner(System.in);
+		vfs = new VirtualFileSystem(4096);
+		uac = new UserAccountController();
 	}
 	
 	public static void execute(String[] arguments){
@@ -97,11 +89,13 @@ public class Application implements Constants {
 		}
 	}
 	
-	public static void test(){
-
+	public static void login(){
+		uac.login();
 	}
-
-	/* --- João R --- */
+	
+	public static void logout(){
+		uac.logout();
+	}
 	
 	public static void clear(){
 		Tools.clearScreen();
@@ -111,90 +105,12 @@ public class Application implements Constants {
 		clear();
 	}
 	
-	public static void diff(String ... args){
-	}
-	
-	public static void echo(String ... args){
+	public static void test(String[] arguments){
+		System.out.println(arguments[1]);
+		System.out.println(Tools.hashPassword(arguments[1]));
 	}
 	
 	public static void exit(){
 		exit = true;
-	}
-	
-	public static void ls(String ... args){
-
-	}
-	
-	public static void mkdir(String ... args){
-	}
-	
-	public static void pwd(){
-	}
-	
-	public static void tail(String ... args){
-	}
-	
-	/* --- Julia --- */
-	public static void find(String ... args){
-	}
-	
-	public static void rmdir(String ... args){
-	}
-	
-	public static void stat(String ... args){
-	}
-	
-	public static void wc(String ... args){
-	}
-	
-	public static void zip(String ... args){
-	}
-	
-	/* --- Mariana --- */
-	public static void chmod(String ... args){
-	}
-	
-	public static void cp(String ... args){
-	}
-	
-	public static void cd(String ... args){
-	}
-	
-	public static void rename(String ... args){
-	}
-	
-	public static void rm(String ... args){
-	}
-	
-	/* --- Nathan --- */
-	public static void cat(String ... args){
-	}
-	
-	public static void du(String ... args){
-	}
-	
-	public static void grep(String ... args){
-	}
-	
-	public static void tree(){
-	}
-	
-	public static void unzip(String ... args){
-	}
-	
-	/* --- Rodrigo --- */
-	public static void chown(String ... args){
-	}
-	
-	public static void head(String ... args){
-	}
-	
-	public static void history(){
-	}
-	
-	public static void mv(String ... args){
-	}
-	
-	public static void touch(String ... args){
 	}
 }

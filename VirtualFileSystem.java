@@ -72,11 +72,7 @@ public class VirtualFileSystem implements Constants {
         this.MAX_SIZE = size;
     }
 
-    public void initialize(){
-        System.out.println(Application.currentUser.getId());
-    }
-
-    private void loadFromFile(){
-
+    private void initialize(){
+        
     }
 }

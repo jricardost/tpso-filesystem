@@ -1,5 +1,9 @@
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,14 +60,13 @@ public final class Tools implements Constants {
     }
     
     public static void help(String cmd){
-
+        
         String[] help = readApplicationFile("/usr/share/man/" + cmd);
         
         for (String s : help){
             System.out.println(s);
         }
     }
-    
     
     public static String[] readApplicationFile(String path){
         
@@ -86,9 +89,18 @@ public final class Tools implements Constants {
         
         return null;
     }
-
+    
     public static void motd(){
         String[] motd = readApplicationFile("/etc/motd");
         for (String s : motd) System.out.println(s);
+    }
+    
+    public static String hashPassword(String passwd){
+        try {
+            //return MessageDigest.getInstance("SHA-256").digest(passwd.getBytes()).toString();
+            return MessageDigest.getInstance("SHA-256").digest(passwd.getBytes(StandardCharsets.UTF_8)).toString();
+        } catch (NoSuchAlgorithmException nsae){}
+        
+        return "";
     }
 }

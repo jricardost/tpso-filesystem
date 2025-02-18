@@ -10,6 +10,9 @@ public class UserAccountController {
     HashMap<Integer, User> users;
     
     public UserAccountController(){
+
+        users = new HashMap<Integer, User>();
+
         loadUserData();
         loadPasswordData();
     }

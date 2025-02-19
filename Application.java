@@ -1,4 +1,6 @@
 import java.lang.reflect.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -10,9 +12,9 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 	static String currentDirectory;
 	static User currentUser;	
 	
-	static Scanner input;
-	static VirtualFileSystem vfs;
-	static UserAccountController uac;
+	public static Scanner input;
+	public static VirtualFileSystem vfs;
+	public static UserAccountController uac;
 	
 	public static void main(String[] args){
 		
@@ -24,6 +26,9 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		
 		while(!exit) {
 			
+			if (skipLogin){
+				currentUser = new User("root", "", 0, "/");
+			}
 			while (currentUser == null) {
 				uac.login();
 				currentUser = uac.getCurrentUser();

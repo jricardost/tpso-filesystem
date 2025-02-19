@@ -1,6 +1,4 @@
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -76,15 +74,25 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		try {
 			
 			Method method;
-			
+			Class<?> owner;
+
 			if (arguments.length == 1){
 				/* busca métodos sem argumentos */
-				method = Application.class.getMethod(arguments[0]);
-				method.invoke(Application.class);
+				owner = findMethodOwnerNoArgs(arguments[0]);
+				if (owner != null){
+					method = owner.getDeclaredMethod(arguments[0]);
+					method.invoke(owner);
+				}
 			} else {
 				/* busca métodos com argumentos */
-				method = Application.class.getMethod(arguments[0], String[].class);
-				method.invoke(Application.class, (Object) arguments);
+				owner = findMethodOwner(arguments[0], String[].class);
+				if (owner != null){
+					method = owner.getDeclaredMethod(arguments[0], String[].class);
+					method.invoke(owner, (Object) arguments);
+				}
+
+				// method = Application.class.getMethod(arguments[0], String[].class);
+				// method.invoke(Application.class, (Object) arguments);
 			}
 		} catch(NoSuchMethodException e){
 			System.out.println("method not found");
@@ -92,6 +100,55 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+
+		private static Class<?> findMethodOwnerNoArgs(String methodName){
+
+		Method method;
+		Class<?>[] interfaces = Application.class.getInterfaces();
+
+		try{
+			method = Application.class.getDeclaredMethod(methodName);
+			if (method != null) return Application.class;
+		} catch (Exception e){
+
+		}
+
+		for(Class<?> intfs : interfaces){
+
+			try {
+				method = intfs.getMethod(methodName);
+				if (method != null) return intfs;
+			} catch (Exception e) {
+
+			}
+		}
+		
+		return null;
+	}
+		private static Class<?> findMethodOwner(String methodName, Class<?> ... args){
+
+		Method method;
+		Class<?>[] interfaces = Application.class.getInterfaces();
+
+		try{
+			method = Application.class.getDeclaredMethod(methodName, args);
+			if (method != null) return Application.class;
+		} catch (Exception e){
+
+		}
+
+		for(Class<?> intfs : interfaces){
+
+			try {
+				method = intfs.getMethod(methodName, args);
+				if (method != null) return intfs;
+			} catch (Exception e) {
+
+			}
+		}
+		
+		return null;
 	}
 	
 	public static void login(){

@@ -8,15 +8,17 @@ public class VirtualFileSystem implements Constants {
     
     final int MAX_SIZE;
     final String ROOT_FOLDER = "";
-
-    private  String DISK_FOLDER = "";
+    
+    private String DISK_FOLDER = "";
     private ArrayList<String> metadata;
+    private UserAccountController uac;
     
     static IDirectory root;
     static HashMap<String, Inode> files;
     
-    public VirtualFileSystem(int size){
+    public VirtualFileSystem(UserAccountController uac, int size){
         this.MAX_SIZE = size;
+        this.uac = uac;
         initialize();
     }
     
@@ -27,8 +29,8 @@ public class VirtualFileSystem implements Constants {
         root = new IDirectory("");
         
         load(root, ROOT_FOLDER, DISK_FOLDER);
-
-       applyMetadata();
+        
+        applyMetadata();
     }
     
     private void load(IDirectory node, String vPath, String rPath){
@@ -52,21 +54,21 @@ public class VirtualFileSystem implements Constants {
             }
         } 
     }
- 
+    
     public final void save(){
         metadata = new ArrayList<String>();
         save(root);
-
+        
         Tools.saveApplicationFile("/.metadata", metadata.toArray(new String[0]));
-
+        
         System.out.println("files saved!");
     }
-
+    
     private void save(IDirectory node){        
         for (Inode n : node.files.values()){
-
+            
             metadata.add(String.format("%s:%s:%s", n.owner, n.permissions, n.absolutePath));
-
+            
             if (n instanceof IDirectory){
                 save((IDirectory) n);
             } else {
@@ -74,33 +76,37 @@ public class VirtualFileSystem implements Constants {
             }
         }
     }
-
+    
     private void applyMetadata(){
         String[] metadata = Tools.readApplicationFile("/.metadata");
-
+        
         for (String s : metadata){
-
+            
             String[] split = s.split(":");
-
+            
             if (split.length != 3) continue;
-
+            
             Inode node = get(split[2]);
-
+            
             if (node != null){
                 node.owner = Integer.parseInt(split[0]);
                 node.permissions = Integer.parseInt(split[1]);
             }
         }
     }
-
-    private static String validatePath(String path){
+    
+    private String validatePath(String path){
         String res = path;
         res = res.replace("///", "/");
         res = res.replace("//", "/");
         return res;
     }
     
-    private static Inode get(String path){
+    private Inode get(String path){
+        return get(path, uac.getUser("root"));
+    }
+
+    private Inode get(String path, User user){
         
         if (path != "/" && path.charAt(0) == '/') path = path.substring(1);
         
@@ -116,7 +122,7 @@ public class VirtualFileSystem implements Constants {
             
             if (name == "") continue;
             
-            temp = dir.files.get(name); 
+            temp = dir.files.get(name);
             
             if (temp == null) {
                 return null;
@@ -130,10 +136,20 @@ public class VirtualFileSystem implements Constants {
         
         return temp;
     }
-    
-    public static Inode read(String path){
-        String s = Application.currentDirectory + "/" + path;
-        Inode node = get(validatePath(s)); 
+ 
+    public Inode read(String path){
+        Inode node;
+        String filePath = path;
+        
+        System.out.println("fileRequest: " + validatePath(filePath));
+        node = get(validatePath(filePath), Application.currentUser); 
+
+        if (node == null){
+            filePath = Application.currentDirectory + "/" + path;
+
+            System.out.println("fileRequest: " + validatePath(filePath));
+            node = get(validatePath(filePath), Application.currentUser); 
+        }
         
         if (node != null) return node;
         
@@ -141,7 +157,11 @@ public class VirtualFileSystem implements Constants {
         return null;
     }
     
-    public static void write(Inode file){
+    public void write(Inode file){
         return;
+    }
+
+    public void delete(Inode node){
+        
     }
 }

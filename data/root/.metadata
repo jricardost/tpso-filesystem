@@ -21,7 +21,9 @@
 0:755:/usr
 0:755:/usr/share
 0:755:/usr/share/man
+0:0:/usr/share/man/tail
 0:755:/usr/share/man/diff
 0:755:/srv
 0:776:/tmp
+0:700:/root
 0:755:/boot

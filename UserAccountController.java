@@ -93,6 +93,10 @@ public class UserAccountController {
         return null;
     }
 
+    public User getUser(String name){
+        return users.get(name);
+    }
+
     public User getCurrentUser(){
         return this.currentUser;
     }

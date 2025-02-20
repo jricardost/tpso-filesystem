@@ -28,11 +28,38 @@ public class Inode implements Constants {
         
     }
 
-    private boolean ownerReadAllowed(){
+    public boolean allowRead(User user){
+
+        String perm = Tools.getPermissionsString(type, permissions);
+
+        System.out.println("allowRead: " + perm);
+
+        if (user.id() == owner && perm.charAt(1) == 'r') return true;
+        if (user.id() != owner && perm.charAt(7) == 'r') return true;
+
         return false;
     }
 
-    private boolean ownerWriteAllowed(){
+    public boolean allowWrite(User user){
+
+        String perm = Tools.getPermissionsString(type, permissions);
+
+        System.out.println("allowWrite: " + perm);
+
+        if (user.id() == owner && perm.charAt(2) == 'w') return true;
+        if (user.id() != owner && perm.charAt(8) == 'w') return true;
+
+        return false;
+    }
+
+    public boolean allowExecute(User user){
+        String perm = Tools.getPermissionsString(type, permissions);
+
+        System.out.println("allowExecute: " + perm);
+
+        if (user.id() == owner && perm.charAt(3) == 'x') return true;
+        if (user.id() != owner && perm.charAt(9) == 'x') return true;
+
         return false;
     }
 }   

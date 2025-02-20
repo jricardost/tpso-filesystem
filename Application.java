@@ -2,7 +2,7 @@ import java.lang.reflect.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Application implements Constants, JoaoRicardo, Julia, Mariana, Natan, Rodrigo {
+public class Application implements Constants {
 	
 	private static boolean exit = false;
 	private static boolean saveFiles = false;
@@ -12,9 +12,19 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 	public static String currentDirectory;
 	public static User currentUser;	
 	public static VirtualFileSystem vfs;
-
+	public static UserAccountController uac;
+	
+	public JoaoRicardo joaoRicardo;
+	public Julia julia;
+	public Mariana mariana;
+	public Natan natan;
+	public Rodrigo rodrigo;
+	
 	public Scanner input;
-	public UserAccountController uac;
+	
+	public Application (){
+		initialize();
+	}
 	
 	public void main(){
 		
@@ -22,7 +32,7 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		String cmdline;
 		String[] arguments;
 		
-		initialize();
+		
 		
 		while(!exit) {
 			
@@ -30,7 +40,7 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 			while (currentUser == null) {
 				
 				if (skipLogin){
-					currentUser = uac.getUser(0);
+					currentUser = uac.getUser(1000);
 				} else {
 					uac.login();
 					currentUser = uac.getCurrentUser();
@@ -66,33 +76,59 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		clear();
 		
 		if (saveFiles) vfs.save();
-
+		
 		System.exit(0);
 	}
 	
 	private void initialize(){
 		input = new Scanner(System.in);
-		vfs = new VirtualFileSystem(4096);
 		uac = new UserAccountController();
-	}
+		vfs = new VirtualFileSystem(uac, 4096);
 
+		joaoRicardo = new JoaoRicardo(this, uac, vfs);
+		julia = new Julia(this, uac, vfs);
+		mariana = new Mariana(this, uac, vfs);
+		natan = new Natan(this, uac, vfs);
+		rodrigo = new Rodrigo(this, uac, vfs);
+	}
+	
 	public void execute(String[] arguments){
-		try {
+		
+		
+		Method method;
+		Object obj;
+		Class<?> owner;
+		
+		
+		try {	
+			obj = findObjectOwner(arguments[0], String[].class);
+			if (obj != null){
+				method = obj.getClass().getDeclaredMethod(arguments[0], String[].class);
+				method.invoke(obj, (Object) arguments);
+				return;
+			} else {
+				System.out.println("object == null");
+			}
 			
-			Method method;
-			Class<?> owner;
-			
+		} catch(NoSuchMethodException e){
+			System.out.println("method not found (obj)");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try {	
 			owner = findMethodOwner(arguments[0], String[].class);
 			
 			if (owner != null){
 				method = owner.getDeclaredMethod(arguments[0], String[].class);
-
+				
 				if (Modifier.isStatic(method.getModifiers())){
 					method.invoke(owner, (Object) arguments);
 				} else {
 					method.invoke(this, (Object) arguments);
 				}
-
+				
 				
 			} else {
 				throw new NoSuchMethodException();
@@ -104,6 +140,23 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	private Object findObjectOwner(String methodName, Class<?> ... args){
+		
+		Method method;
+		Object[] users = { joaoRicardo , julia, mariana, natan, rodrigo};
+		
+		for(Object obj : users){	
+			try {
+				method = obj.getClass().getMethod(methodName, args);
+				if (method != null) return obj;
+			} catch (Exception e) {
+				
+			}
+		}
+		
+		return null;
 	}
 	
 	private Class<?> findMethodOwner(String methodName, Class<?> ... args){
@@ -156,7 +209,7 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		if (args.length > 1 && args[1].equals("save")) {
 			saveFiles = true;
 		}
-
+		
 		Application.exit = true;
 	}
 }

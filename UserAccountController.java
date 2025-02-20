@@ -6,7 +6,6 @@ import java.security.AllPermission;
 public class UserAccountController {
     
     // private int currentUser;
-    User currentUser;
     HashMap<String, User> users;
     
     public UserAccountController(){
@@ -41,7 +40,7 @@ public class UserAccountController {
         User user = users.get(username);
 
         if (user != null && password.equals(user.password())){
-            this.currentUser = new User(username, password, 0, "/");
+            Application.currentUser = getUser(username);
             return true;
         }
         
@@ -98,6 +97,6 @@ public class UserAccountController {
     }
 
     public User getCurrentUser(){
-        return this.currentUser;
+        return Application.currentUser;
     }
 }

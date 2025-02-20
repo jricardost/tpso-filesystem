@@ -6,3 +6,11 @@ usage:
 options: 
     no extra options.
     
+usage:
+    diff <file1> <file2>
+
+    Compare files line by line.
+
+options: 
+    no extra options.
+    

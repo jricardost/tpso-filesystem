@@ -75,7 +75,7 @@ public final class Tools implements Constants {
     }
     
     public static String[] readApplicationFile(String path, boolean keepComments){
- 
+        
         try {
             ArrayList<String> lines = new ArrayList<String>();
             
@@ -101,9 +101,14 @@ public final class Tools implements Constants {
     }
     
     public static void saveApplicationFile(String path, String[] content){
-
+        
+        
         File file = new File(new File("data/root").getAbsolutePath() + path);
-        System.out.println(file.getAbsolutePath());
+        System.out.println("saving: " + file.getAbsolutePath());
+        
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             if (content == null) return;

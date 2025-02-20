@@ -16,5 +16,11 @@ public final class IFile extends Inode {
     public void setContent(String[] content){
         this.content = content;
         this.modificationDate = Tools.timeStamp("MMM d HH:mm");
+        // Atualiza tamanho do arquivo
+        int _size = 0;
+        for (String line : content) {
+            _size += line.length();
+        }
+        this.size = _size;
     }
 }

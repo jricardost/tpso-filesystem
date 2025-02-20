@@ -12,11 +12,13 @@ public class VirtualFileSystem implements Constants {
     private String DISK_FOLDER = "";
     private ArrayList<String> metadata;
     private UserAccountController uac;
+    private Application app;
     
     static IDirectory root;
     static HashMap<String, Inode> files;
     
-    public VirtualFileSystem(UserAccountController uac, int size){
+    public VirtualFileSystem(Application app, UserAccountController uac, int size){
+        this.app = app;
         this.MAX_SIZE = size;
         this.uac = uac;
         initialize();
@@ -141,19 +143,19 @@ public class VirtualFileSystem implements Constants {
         Inode node;
         String filePath = path;
         
-        System.out.println("fileRequest: " + validatePath(filePath));
+        // System.out.println("fileRequest: " + validatePath(filePath));
         node = get(validatePath(filePath), Application.currentUser); 
 
         if (node == null){
-            filePath = Application.currentDirectory + "/" + path;
+            filePath = app.currentDirectory + "/" + path;
 
-            System.out.println("fileRequest: " + validatePath(filePath));
+            // System.out.println("fileRequest: " + validatePath(filePath));
             node = get(validatePath(filePath), Application.currentUser); 
         }
         
         if (node != null) return node;
         
-        System.out.println("file not found");
+        // System.out.println("file not found");
         return null;
     }
     

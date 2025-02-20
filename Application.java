@@ -9,7 +9,7 @@ public class Application implements Constants {
 	private static boolean skipLogin = true;
 	private static boolean displayMOTD = false;
 	
-	public static String currentDirectory;
+	public String currentDirectory;
 	public static User currentUser;	
 	public static VirtualFileSystem vfs;
 	public static UserAccountController uac;
@@ -40,7 +40,7 @@ public class Application implements Constants {
 			while (currentUser == null) {
 				
 				if (skipLogin){
-					currentUser = uac.getUser(1000);
+					currentUser = uac.getUser(0);
 				} else {
 					uac.login();
 					currentUser = uac.getCurrentUser();
@@ -83,7 +83,7 @@ public class Application implements Constants {
 	private void initialize(){
 		input = new Scanner(System.in);
 		uac = new UserAccountController();
-		vfs = new VirtualFileSystem(uac, 4096);
+		vfs = new VirtualFileSystem(this, uac, 4096);
 
 		joaoRicardo = new JoaoRicardo(this, uac, vfs);
 		julia = new Julia(this, uac, vfs);

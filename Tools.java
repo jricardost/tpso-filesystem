@@ -106,6 +106,7 @@ public final class Tools implements Constants {
         System.out.println(file.getAbsolutePath());
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            if (content == null) return;
             for (String line : content) {
                 writer.write(line);  // Write each line
                 writer.newLine();  // Add a new line after each string

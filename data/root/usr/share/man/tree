@@ -1,5 +1,5 @@
 usage:
-    tree
+    tree [<directory>]
 
     List contents of directories in a tree-like format.
 

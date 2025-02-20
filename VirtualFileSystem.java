@@ -141,7 +141,7 @@ public class VirtualFileSystem implements Constants {
         return null;
     }
     
-    public static void write(String path){
+    public static void write(Inode file){
         return;
     }
 }

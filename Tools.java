@@ -75,9 +75,7 @@ public final class Tools implements Constants {
     }
     
     public static String[] readApplicationFile(String path, boolean keepComments){
-        
-        
-        
+ 
         try {
             ArrayList<String> lines = new ArrayList<String>();
             

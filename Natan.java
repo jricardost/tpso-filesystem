@@ -65,7 +65,7 @@ public interface Natan extends Constants {
         }
 
         Inode directory = VirtualFileSystem.read(path);
-        if (directory != null) {
+        if (directory != null && directory.type == TYPE_DIRECTORY) {
             String[] split = (Application.currentDirectory + "/" + path).split("/");
             System.out.println(split[split.length - 1]);
 

@@ -8,6 +8,24 @@ public interface Natan extends Constants {
     static final int MAX_TREE_DEPTH = 1024;
 
     public static void cat(String ... args){
+        if (args.length == 1) {
+            Tools.help(args[0]);
+            return;
+        }
+
+        Inode inode = VirtualFileSystem.read(args[1]);
+
+        if (inode == null) {
+            return;
+        }
+
+        if (inode.type == TYPE_DIRECTORY) {
+            System.out.println("path specified is a directory");
+            return;
+        }
+
+        IFile file = (IFile) inode;
+        System.out.println(String.join("", file.getContent()));
     }
     
     public static void du(String ... args){

@@ -7,34 +7,40 @@ public class UserAccountController {
     
     // private int currentUser;
     User currentUser;
-    HashMap<Integer, User> users;
+    HashMap<String, User> users;
     
     public UserAccountController(){
+        
+        users = new HashMap<String, User>();
+        
         loadUserData();
-        loadPasswordData();
     }
     
     private void loadUserData(){
-        String[] data = Tools.readApplicationFile("/etc/passwd");
+        String[] usr = Tools.readApplicationFile("/etc/passwd", false);
+        String[] pwd = Tools.readApplicationFile("/etc/shadow", false);
         
-        // System.out.println("/data/users");
+        HashMap<String, String> passwd = new HashMap<String, String>();
         
-        // for (String s : data){
-        //     System.out.println(s);
-        // }
-    }
-    
-    private void loadPasswordData(){
-        String[] data = Tools.readApplicationFile("/etc/shadow");
+        for (String s : pwd){
+            
+            String[] split = s.split(":");
+            if (split.length == 2){
+                passwd.put(split[0], split[1]);
+            }
+        }
         
-        // System.out.println("/data/shadow");
-        // for (String s : data){
-        //     System.out.println(s);
-        // }
+        for (String s : usr){
+            String[] split  = s.split(":");
+            users.put(split[0], new User(split[0], passwd.get(split[0]), Integer.parseInt(split[2]), split[3]));
+        }
     }
     
     private boolean authenticate(String username, String password){
-        if (username.equals("user") && password.equals("user")){
+
+        User user = users.get(username);
+
+        if (user != null && password.equals(user.password())){
             this.currentUser = new User(username, password, 0, "/");
             return true;
         }
@@ -48,7 +54,7 @@ public class UserAccountController {
         int tries = 3;
         String username = "";
         String password = "";
-
+        
         Console console = System.console();
         Scanner scan = new Scanner(System.in);
         
@@ -77,7 +83,16 @@ public class UserAccountController {
     public void logout(){
         Application.currentUser = null;
     }
-    
+
+    public User getUser(int id){
+
+        for (User user : users.values()){
+            if (user.id() == id) return user;
+        }
+
+        return null;
+    }
+
     public User getCurrentUser(){
         return this.currentUser;
     }

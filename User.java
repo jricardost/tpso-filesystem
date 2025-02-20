@@ -1,6 +1,6 @@
 public class User {
     private int UID;
-    private String name;
+    public String name;
     private String passwd;
     private String homeDir;
 
@@ -15,11 +15,19 @@ public class User {
         this.homeDir = homeDir;
     }
 
-    public int getId(){
+    public int id(){
         return UID;
     }
 
-    public String getName(){
+    public String name(){
         return name;
+    }
+
+    public String password(){
+        return passwd;
+    }
+
+    public String homeDir(){
+        return homeDir;
     }
 }

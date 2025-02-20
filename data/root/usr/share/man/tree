@@ -1,0 +1,7 @@
+usage:
+    tree [<directory>]
+
+    List contents of directories in a tree-like format.
+
+options:
+    no extra options.

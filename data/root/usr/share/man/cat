@@ -1,0 +1,7 @@
+usage:
+    cat <file>
+
+    Concatenate file to standard output.
+
+options:
+    no extra options.

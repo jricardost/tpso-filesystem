@@ -1,5 +1,11 @@
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +62,7 @@ public final class Tools implements Constants {
     }
     
     public static void help(String cmd){
-
+        
         String[] help = readApplicationFile("/usr/share/man/" + cmd);
         
         for (String s : help){
@@ -64,16 +70,23 @@ public final class Tools implements Constants {
         }
     }
     
-    
     public static String[] readApplicationFile(String path){
-        
+        return readApplicationFile(path, true);
+    }
+    
+    public static String[] readApplicationFile(String path, boolean keepComments){
+ 
         try {
             ArrayList<String> lines = new ArrayList<String>();
+            
             File file = new File(new File("").getAbsolutePath() + "/data/root" + path);
             Scanner fscan = new Scanner(file);
             
             while (fscan.hasNextLine()) {
-                lines.add(fscan.nextLine());
+                
+                String line = fscan.nextLine();
+                if (!keepComments && line.charAt(0) == '#') continue;
+                lines.add(line);
             }
             
             fscan.close();        
@@ -86,9 +99,34 @@ public final class Tools implements Constants {
         
         return null;
     }
+    
+    public static void saveApplicationFile(String path, String[] content){
 
+        File file = new File(new File("data/root").getAbsolutePath() + path);
+        System.out.println(file.getAbsolutePath());
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String line : content) {
+                writer.write(line);  // Write each line
+                writer.newLine();  // Add a new line after each string
+            }
+            // System.out.println("File written successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle exception if file writing fails
+        }
+    }
+    
     public static void motd(){
-        String[] motd = readApplicationFile("/etc/motd");
+        String[] motd = readApplicationFile("/etc/motd", true);
         for (String s : motd) System.out.println(s);
+    }
+    
+    public static String hashPassword(String passwd){
+        try {
+            //return MessageDigest.getInstance("SHA-256").digest(passwd.getBytes()).toString();
+            return MessageDigest.getInstance("SHA-256").digest(passwd.getBytes(StandardCharsets.UTF_8)).toString();
+        } catch (NoSuchAlgorithmException nsae){}
+        
+        return "";
     }
 }

@@ -1,0 +1,7 @@
+usage:
+    unzip <file>
+
+    Extract compressed files in a ZIP archive.
+
+options:
+    no extra options.

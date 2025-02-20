@@ -1,4 +1,3 @@
-import java.awt.desktop.AppForegroundListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +164,32 @@ public interface Natan extends Constants {
             System.out.println(node.name);
         }
     }
-    
+
     public static void unzip(String ... args){
+        if (args.length == 1) {
+            Tools.help(args[0]);
+            return;
+        }
+
+        String path = args[1];
+        Inode inode = VirtualFileSystem.read(path);
+
+        if (inode == null) return;
+
+        if (inode.type == TYPE_DIRECTORY) {
+            System.out.println("path specified is a directory");
+            return;
+        }
+
+        if (!inode.name.endsWith(".zip")) {
+            System.out.println("file is not zipped");
+            return;
+        }
+
+        // Tira .zip do nome do arquivo
+        inode.name = inode.name.substring(0, inode.name.length() - 4);
+        inode.absolutePath = inode.absolutePath.substring(0, inode.absolutePath.length() - 4);
+
+        // TODO: descomprimir conteúdo do arquivo se necessário(depende da implementação do comando 'zip')
     }
 }

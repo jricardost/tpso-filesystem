@@ -5,12 +5,3 @@ usage:
 
 options: 
     - n : output the last n lines, instead of the last 10 (default)
-    
-usage:
-    tail <file> <n>
-
-    Compare files line by line.
-
-options: 
-    - n : output the last n lines, instead of the last 10 (default)
-    

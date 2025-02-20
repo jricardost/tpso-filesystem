@@ -1,0 +1,7 @@
+usage:
+    du [<file or directory>]
+
+    Summarize device usage of a file or set of files, recursively for directories. If no file or directory is specified, it defaults to the current directory.
+
+options:
+    no extra options.

@@ -8,11 +8,6 @@ public interface Natan extends Constants {
     static final int MAX_TREE_DEPTH = 1024;
 
     public static void cat(String ... args){
-        if (args.length == 1) {
-            Tools.help(args[0]);
-            return;
-        }
-
         Inode inode = VirtualFileSystem.read(args[1]);
         if (inode == null) {
             return;
@@ -26,8 +21,32 @@ public interface Natan extends Constants {
         IFile file = (IFile) inode;
         System.out.println(String.join("\n", file.getContent()));
     }
-    
-    public static void du(String ... args){
+
+    public static void du(String ... args) {
+        String path = "";
+        if (args.length == 2) {
+            path = args[1];
+        }
+
+        Inode inode = VirtualFileSystem.read(path);
+        if (inode == null) {
+            System.out.println("file or folder not found");
+            return;
+        }
+        du(inode);
+    }
+
+    private static void du(Inode rootNode) {
+        // Arquivo
+        if (rootNode.type == TYPE_FILE) {
+            System.out.printf("%-8d %s%n", rootNode.size, rootNode.absolutePath);
+            return;
+        }
+        // Diretório
+        IDirectory directory = (IDirectory) rootNode;
+        for(Inode inode : directory.files.values()) {
+            du(inode);
+        }
     }
     
     public static void grep(String ... args){

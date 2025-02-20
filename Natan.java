@@ -14,7 +14,6 @@ public interface Natan extends Constants {
         }
 
         Inode inode = VirtualFileSystem.read(args[1]);
-
         if (inode == null) {
             return;
         }
@@ -25,13 +24,38 @@ public interface Natan extends Constants {
         }
 
         IFile file = (IFile) inode;
-        System.out.println(String.join("", file.getContent()));
+        System.out.println(String.join("\n", file.getContent()));
     }
     
     public static void du(String ... args){
     }
     
     public static void grep(String ... args){
+        if (args.length != 3) {
+            Tools.help(args[0]);
+            return;
+        }
+
+        String pattern = args[1];
+        String path = args[2];
+
+        Inode inode = VirtualFileSystem.read(path);
+        if (inode == null) {
+            return;
+        }
+
+        if (inode.type == TYPE_DIRECTORY) {
+            System.out.println("path specified is a directory");
+            return;
+        }
+
+        IFile file = (IFile) inode;
+        for(String line : file.getContent()) {
+            if (line.contains(pattern)) {
+                System.out.println(line);
+            }
+        }
+
     }
 
     public static void tree(String ... args) {

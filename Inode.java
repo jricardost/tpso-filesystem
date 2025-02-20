@@ -27,4 +27,12 @@ public class Inode implements Constants {
     public void setPermissions(){
         
     }
+
+    private boolean ownerReadAllowed(){
+        return false;
+    }
+
+    private boolean ownerWriteAllowed(){
+        return false;
+    }
 }   

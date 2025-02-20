@@ -6,7 +6,7 @@ public interface Rodrigo {
     public static void head(String ... args){
     }
     
-    public static void history(){
+    public static void history(String ... args){
     }
     
     public static void mv(String ... args){

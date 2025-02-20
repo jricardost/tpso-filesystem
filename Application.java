@@ -5,16 +5,18 @@ import java.util.Scanner;
 public class Application implements Constants, JoaoRicardo, Julia, Mariana, Natan, Rodrigo {
 	
 	private static boolean exit = false;
+	private static boolean saveFiles = false;
 	private static boolean skipLogin = true;
+	private static boolean displayMOTD = false;
 	
-	static String currentDirectory;
-	static User currentUser;	
-	
-	public static Scanner input;
+	public static String currentDirectory;
+	public static User currentUser;	
 	public static VirtualFileSystem vfs;
-	public static UserAccountController uac;
+
+	public Scanner input;
+	public UserAccountController uac;
 	
-	public static void main(String[] args){
+	public void main(){
 		
 		/* Ambiente */
 		String cmdline;
@@ -24,20 +26,22 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		
 		while(!exit) {
 			
-			if (skipLogin){
-				currentUser = new User("root", "", 0, "/");
-			}
+			
 			while (currentUser == null) {
-				uac.login();
-				currentUser = uac.getCurrentUser();
 				
-				if (currentUser != null){
-					Tools.motd();
+				if (skipLogin){
+					currentUser = uac.getUser(0);
+				} else {
+					uac.login();
+					currentUser = uac.getCurrentUser();
 				}
+				
+				if (displayMOTD) Tools.motd();
+				currentDirectory = currentUser.homeDir();
 			}
 			
 			try {
-				System.out.print(String.format("%s@tpso:~$ ", currentUser.getName()));
+				System.out.print(String.format("%s@tpso:%s $ ", currentUser.name(), (currentDirectory == currentUser.homeDir()) ? "~" : currentDirectory));
 				cmdline = input.nextLine();
 				arguments = cmdline.split(" ");
 				
@@ -61,39 +65,39 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 		
 		clear();
 		
+		if (saveFiles) vfs.save();
+
 		System.exit(0);
 	}
 	
-	private static void initialize(){
+	private void initialize(){
 		input = new Scanner(System.in);
 		vfs = new VirtualFileSystem(4096);
 		uac = new UserAccountController();
 	}
-	
-	public static void execute(String[] arguments){
+
+	public void execute(String[] arguments){
 		try {
 			
 			Method method;
 			Class<?> owner;
+			
+			owner = findMethodOwner(arguments[0], String[].class);
+			
+			if (owner != null){
+				method = owner.getDeclaredMethod(arguments[0], String[].class);
 
-			if (arguments.length == 1){
-				/* busca métodos sem argumentos */
-				owner = findMethodOwnerNoArgs(arguments[0]);
-				if (owner != null){
-					method = owner.getDeclaredMethod(arguments[0]);
-					method.invoke(owner);
-				}
-			} else {
-				/* busca métodos com argumentos */
-				owner = findMethodOwner(arguments[0], String[].class);
-				if (owner != null){
-					method = owner.getDeclaredMethod(arguments[0], String[].class);
+				if (Modifier.isStatic(method.getModifiers())){
 					method.invoke(owner, (Object) arguments);
+				} else {
+					method.invoke(this, (Object) arguments);
 				}
 
-				// method = Application.class.getMethod(arguments[0], String[].class);
-				// method.invoke(Application.class, (Object) arguments);
+				
+			} else {
+				throw new NoSuchMethodException();
 			}
+			
 		} catch(NoSuchMethodException e){
 			System.out.println("method not found");
 		}
@@ -101,78 +105,58 @@ public class Application implements Constants, JoaoRicardo, Julia, Mariana, Nata
 			e.printStackTrace();
 		}
 	}
-
-		private static Class<?> findMethodOwnerNoArgs(String methodName){
-
-		Method method;
-		Class<?>[] interfaces = Application.class.getInterfaces();
-
-		try{
-			method = Application.class.getDeclaredMethod(methodName);
-			if (method != null) return Application.class;
-		} catch (Exception e){
-
-		}
-
-		for(Class<?> intfs : interfaces){
-
-			try {
-				method = intfs.getMethod(methodName);
-				if (method != null) return intfs;
-			} catch (Exception e) {
-
-			}
-		}
+	
+	private Class<?> findMethodOwner(String methodName, Class<?> ... args){
 		
-		return null;
-	}
-		private static Class<?> findMethodOwner(String methodName, Class<?> ... args){
-
 		Method method;
 		Class<?>[] interfaces = Application.class.getInterfaces();
-
+		
 		try{
 			method = Application.class.getDeclaredMethod(methodName, args);
 			if (method != null) return Application.class;
 		} catch (Exception e){
-
+			
 		}
-
+		
 		for(Class<?> intfs : interfaces){
-
+			
 			try {
 				method = intfs.getMethod(methodName, args);
 				if (method != null) return intfs;
 			} catch (Exception e) {
-
+				
 			}
 		}
 		
 		return null;
 	}
 	
-	public static void login(){
+	public void login(String ... args){
 		uac.login();
 	}
 	
-	public static void logout(){
+	public void logout(String ... args){
 		uac.logout();
+		skipLogin = false;
 	}
 	
-	public static void clear(){
+	public void clear(String ... args){
 		Tools.clearScreen();
 	}
 	
-	public static void cls(){
+	public void cls(String ... args){
 		clear();
 	}
 	
-	public static void test(String[] arguments){
-		System.out.println(arguments[1]);
-		System.out.println(Tools.hashPassword(arguments[1]));
+	public void test(String ... arguments){
+		
 	}
 	
-	public static void exit(){
-		exit = true;
+	public void exit(String ... args){
+		if (args.length > 1 && args[1].equals("save")) {
+			saveFiles = true;
+		}
+
+		Application.exit = true;
 	}
 }

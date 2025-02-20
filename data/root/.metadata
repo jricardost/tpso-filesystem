@@ -24,11 +24,12 @@
 0:755:/usr/share/man
 0:0:/usr/share/man/tail
 0:755:/usr/share/man/diff
-0:755:/srv
 0:776:/tmp
+0:755:/srv
 0:0:/root
 0:0:/root/rodrigo
 0:755:/root/1234
+0:0:/root/teste.txt
 0:0:/root/soares
 0:0:/root/soares/rodrigo
 0:755:/boot

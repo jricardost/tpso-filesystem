@@ -105,12 +105,14 @@ public class VirtualFileSystem implements Constants {
         if (path != "/" && path.charAt(0) == '/') path = path.substring(1);
         
         String[] split = path.split("/");
-        
+
+        if (split.length == 1) return root;
+
         IDirectory dir = root;
         Inode temp = null;
         String name;
         
-        for (int i = 0; i < split.length; i++){
+        for (int i = 1; i < split.length; i++){
             
             name = split[i];
             

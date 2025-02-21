@@ -20,6 +20,27 @@ public class Rodrigo {
     }
 
     public void chown(String... args) {
+        if (args.length != 3) {
+            System.out.println("Usage: chown <owner> <file>");
+            return;
+        }
+
+        String owner = args[1];
+        String filePath = args[2];
+
+        Inode inode = vfs.read(filePath);
+
+        if (inode != null) {
+            try {
+                inode.owner = Integer.parseInt(owner);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid owner id: " + owner);
+                return;
+            }
+            System.out.println("Owner for " + filePath + " changed to " + owner);
+        } else {
+            System.out.println("File not found: " + filePath);
+        }
     }
 
     public void head(String... args) {

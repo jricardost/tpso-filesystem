@@ -106,7 +106,7 @@ public class JoaoRicardo {
         IDirectory dir = (IDirectory) vfs.read(app.currentDirectory);
         for (String key : dir.files.keySet()) {
             Inode file = dir.files.get(key);
-            System.out.print(file.permissions + " " + Tools.getPermissionsString(file.type, file.permissions) + " - ");
+            System.out.print(Tools.getPermissionsString(file.type, file.permissions) + " - ");
             System.out.print((Application.uac.getUser(file.owner)).name() + " ");
             System.out.print(file.creationDate + " ");
             System.out.print(file.name + "\n");

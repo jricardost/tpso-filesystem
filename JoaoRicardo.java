@@ -114,6 +114,24 @@ public class JoaoRicardo {
     }
     
     public void mkdir(String... args) {
+        if (args.length != 2){
+            Tools.help(args[0]);
+            return;
+        }
+
+        String path = args[1];
+
+        if (path.charAt(0) == '/') path = path.substring(1);
+
+        String[] split = path.split("/");
+
+        IDirectory currentDir = (IDirectory) vfs.read(app.currentDirectory);
+
+        for (int i = 0; i < split.length; i++) {
+            IDirectory dir = new IDirectory(app.currentDirectory + "/" + split[i]);
+            currentDir.files.put(dir.name, dir);
+            currentDir = dir;
+        }
     }
     
     public void pwd(String... args) {

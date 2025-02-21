@@ -198,8 +198,12 @@ public class Application implements Constants {
 		clear();
 	}
 
-	public void test(String... arguments) {
+	public void test(String... args) {
 
+	}
+
+	public String currentDirectory(String args) {
+		return currentDirectory + "/" + args;
 	}
 
 	public void exit(String... args) {

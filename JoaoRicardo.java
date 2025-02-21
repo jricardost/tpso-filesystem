@@ -82,7 +82,6 @@ public class JoaoRicardo {
     }
 
     public void tail(String... args) {
-
         int linecount = 0;
 
         switch (args.length) {
@@ -91,13 +90,31 @@ public class JoaoRicardo {
                 break;
 
             case 3:
-                linecount = Integer.parseInt(args[2]);
-                break;
+                try {
+                    linecount = Integer.parseInt(args[2]);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("head: invalid number of lines: " + args[2]);
+                    Tools.help("head");
+                    return;
+                }
 
             default:
-                Tools.help("tail");
+                Tools.help("head");
                 return;
         }
-        Inode dir = vfs.read(args[1]);
+        Inode node = vfs.read(args[1]);
+        if (node == null || node instanceof IDirectory) {
+            System.out.println("head: " + args[1] + " not found");
+            return;
+        }
+
+        IFile file = (IFile) node;
+        String[] lines = file.getContent();
+
+        int start = Math.max(0, lines.length - linecount);
+        for (int i = start; i < lines.length; i++) {
+            System.out.println(lines[i]);
+        }
     }
 }

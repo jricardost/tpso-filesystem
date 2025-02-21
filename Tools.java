@@ -30,13 +30,13 @@ public final class Tools implements Constants {
     
     public static String timeStamp() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", new Locale("en", "US"));
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-3"));
         return simpleDateFormat.format(new Date());
     }
     
     public static String timeStamp(String stampFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(stampFormat, new Locale("en", "US"));
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-3"));
         return simpleDateFormat.format(new Date());
     }
     

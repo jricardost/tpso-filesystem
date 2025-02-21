@@ -23,6 +23,7 @@
 0:755:/usr/share
 0:755:/usr/share/man
 0:0:/usr/share/man/tail
+0:0://usr/share/man/result.zip
 0:755:/usr/share/man/diff
 0:776:/tmp
 0:755:/srv

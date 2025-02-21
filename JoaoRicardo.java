@@ -64,9 +64,9 @@ public class JoaoRicardo {
     }
 
     public void ls(String... args) {
-        vfs.files = VirtualFileSystem.root.files;
-        for (String key : vfs.files.keySet()) {
-            Inode file = vfs.files.get(key);
+        IDirectory dir = (IDirectory) vfs.read(app.currentDirectory);
+        for (String key : dir.files.keySet()) {
+            Inode file = dir.files.get(key);
             System.out.print(Tools.getPermissionsString(file.type, file.permissions) + " - ");
             System.out.print((Application.uac.getUser(file.owner)).name() + " ");
             System.out.print(file.creationDate + " ");

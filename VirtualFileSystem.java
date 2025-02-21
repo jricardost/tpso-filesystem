@@ -14,7 +14,7 @@ public class VirtualFileSystem implements Constants {
     private UserAccountController uac;
     private Application app;
 
-    static IDirectory root;
+    IDirectory root;
     HashMap<String, Inode> files;
 
     public VirtualFileSystem(Application app, UserAccountController uac, int size) {

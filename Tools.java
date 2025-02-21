@@ -94,7 +94,6 @@ public final class Tools implements Constants {
             return lines.toArray(new String[lines.size()]);
             
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         } 
         
         return null;

@@ -20,7 +20,7 @@ public class Mariana {
 		String filePath = args[2];
 
 		try {
-			int permissions = Integer.parseInt(permissionStr, 8);
+			int permissions = Integer.parseInt(permissionStr);
 			Inode inode = vfs.read(filePath);
 
 			if (inode != null) {

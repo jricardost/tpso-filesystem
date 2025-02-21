@@ -43,10 +43,14 @@
 0:0:/usr/share/man/history
 0:0:/usr/share/man/cp
 0:0:/usr/share/man/exit
+0:0:/usr/share/man/help
 0:0:/usr/share/man/rename
 0:0:/usr/share/man/rm
 0:0:/usr/share/man/pwd
 0:755:/srv
 0:776:/tmp
 0:0:/root
+0:0:/root/2.txt
+0:0:/root/1.txt
+0:0:/root/d2
 0:755:/boot

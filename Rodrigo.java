@@ -93,6 +93,32 @@ public class Rodrigo {
     }
 
     public void mv(String... args) {
+        if (args.length != 3) {
+            System.out.println("Usage: mv <source> <destination>");
+            return;
+        }
+
+        Inode source = vfs.read(args[1]);
+        Inode destination = vfs.read(args[2]);
+
+        if (source == null || destination == null) {
+            System.out.println("mv: cannot move '" + args[1] + "': No such file or directory");
+            return;
+        }
+
+        if (destination instanceof IFile) {
+            System.out.println("mv: cannot move ': " + args[2] + " is not a directory");
+            return;
+        }
+
+        if (source instanceof IFile) {
+            ((IDirectory) destination).files.put(source.name, source);
+            app.execute("rm", args[1]);
+        }
+
+        // arquivo para diretorio
+        // diretorio para diretorio
+
     }
 
     public void touch(String... args) {
@@ -100,7 +126,6 @@ public class Rodrigo {
         boolean updateModificationTime = false;
 
         String filename = args[1];
-        Inode file;
 
         if (args.length < 2) {
             System.out.println("touch: missing file operand");
@@ -121,45 +146,23 @@ public class Rodrigo {
             }
         }
 
-        if (filename.lastIndexOf("/") == 0) {
-            System.out.println("touch: cannot touch " + filename + ": Is a directory");
+        if (filename.lastIndexOf("/") != -1) {
+            System.out.println("touch: cannot touch " + filename + " in another directory");
             return;
         }
 
-        file = vfs.read(filename);
+        Inode file = vfs.read(filename);
 
         if (file != null && updateModificationTime) { // se o arquivo existe!
             file.modificationDate = Tools.timeStamp();
             return;
         }
 
-        if (!createFile)
+        if (!createFile) {
             return;
-
-        String[] split;
-
-        if (filename.indexOf("/") == 0)
-            filename = filename.substring(1);
-
-        if (filename.lastIndexOf("/") > 1) {
-            split = filename.split("/");
-        } else {
-            split = new String[] { filename.replace("/", "") };
         }
 
-        // create directories
         IDirectory currentDir = (IDirectory) vfs.read(app.currentDirectory);
-
-        if (currentDir == null) {
-            System.out.println("touch failed in the current directory");
-            return;
-        }
-
-        for (int i = 0; i < split.length - 1; i++) {
-            IDirectory dir = new IDirectory(app.currentDirectory + "/" + split[i]);
-            currentDir.files.put(dir.name, dir);
-            currentDir = dir;
-        }
 
         IFile ifile = new IFile(app.currentDirectory + "/" + filename);
         currentDir.files.put(ifile.name, ifile);

@@ -1,0 +1,7 @@
+usage:
+   rmdir <path>
+   
+   Remove a directory if empty.
+
+options: 
+    no extra options.

@@ -15,7 +15,7 @@ public class Julia {
 
     public void find(String... args) {
         if (args.length < 3) {
-            System.out.println("Usage: find <path> <file>");
+            Tools.help(args[0]);
             return;
         }
 
@@ -56,7 +56,7 @@ public class Julia {
 
     public void rmdir(String... args) {
         if (args.length < 1) {
-            System.out.println("Usage: rmdir <path>");
+            Tools.help(args[0]);
             return;
         }
 
@@ -83,7 +83,7 @@ public class Julia {
 
     public void stat(String... args) {
         if (args.length < 1) {
-            System.out.println("Usage: stat <path>");
+            Tools.help(args[0]);
             return;
         }
 
@@ -103,7 +103,7 @@ public class Julia {
 
     public void wc(String... args) {
         if (args.length < 1) {
-            System.out.println("Usage: wc <file>");
+            Tools.help(args[0]);
             return;
         }
 
@@ -140,7 +140,7 @@ public class Julia {
 
     public void zip(String... args) {
         if (args.length < 2) {
-            System.out.println("Uso: zip <arquivo_saida> <arquivo1> <arquivo2> ...");
+            Tools.help(args[0]);
             return;
         }
 

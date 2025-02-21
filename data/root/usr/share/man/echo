@@ -1,0 +1,16 @@
+usage:
+    echo <text>
+
+    Print <text> to screen.
+
+    echo <text> > <file>
+
+    Add or replace the content of a file with <text>
+
+    echo <text> >> <file>
+
+    Append <text> to a file.
+    
+
+options: 
+    no extra options.

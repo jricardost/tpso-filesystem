@@ -1,0 +1,7 @@
+usage:
+    unzip <file>
+
+    Unzips the specified file.
+
+options: 
+    no extra options.

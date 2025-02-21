@@ -12,7 +12,7 @@ public class Mariana {
 
 	public void chmod(String... args) {
 		if (args.length != 3) {
-			System.out.println("Usage: chmod <permissions> <file>");
+			Tools.help(args[0]);
 			return;
 		}
 
@@ -37,7 +37,7 @@ public class Mariana {
 
 	public void cp(String... args) {
 		if (args.length != 3) {
-			System.out.println("Usage: cp <source> <destination>");
+			Tools.help(args[0]);
 			return;
 		}
 
@@ -70,7 +70,7 @@ public class Mariana {
 
 	public void cd(String... args) {
 		if (args.length != 2) {
-			System.out.println("Usage: cd <directory>");
+			Tools.help(args[0]);
 			return;
 		}
 
@@ -97,7 +97,7 @@ public class Mariana {
 
 	public void rename(String... args) {
 		if (args.length != 3) {
-			System.out.println("Usage: rename <old_name> <new_name>");
+			Tools.help(args[0]);
 			return;
 		}
 
@@ -123,7 +123,7 @@ public class Mariana {
 
 	public void rm(String... args) {
 		if (args.length != 2) {
-			System.out.println("Usage: rm <file>");
+			Tools.help(args[0]);
 			return;
 		}
 

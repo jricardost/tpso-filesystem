@@ -1,0 +1,7 @@
+usage:
+   stat <path>
+   
+   Print stats for a file.
+
+options: 
+    no extra options.

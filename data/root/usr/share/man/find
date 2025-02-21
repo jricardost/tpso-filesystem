@@ -1,0 +1,7 @@
+usage:
+   find <path> <file>
+   
+   Search for a file in a specific path.
+
+options: 
+    no extra options.

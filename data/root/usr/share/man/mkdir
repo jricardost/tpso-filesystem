@@ -1,0 +1,7 @@
+usage:
+   mkdir <name>
+   
+   Create a directory named <name>
+
+options: 
+    no extra options.

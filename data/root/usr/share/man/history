@@ -1,0 +1,7 @@
+usage:
+   history
+   
+   Print command history.
+
+options: 
+    -c : clear

@@ -1,0 +1,7 @@
+usage:
+   wc <file>
+   
+   Count words of a file.
+
+options: 
+    no extra options.

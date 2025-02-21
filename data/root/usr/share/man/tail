@@ -1,7 +1,8 @@
 usage:
+    tail <file>
     tail <file> <n>
 
-    Compare files line by line.
+    Print last lines of a file.
 
 options: 
     - n : output the last n lines, instead of the last 10 (default)

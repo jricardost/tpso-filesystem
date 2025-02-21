@@ -1,0 +1,7 @@
+usage:
+    chmod <permissions> <file>
+
+    Change permissions of a file or directory.
+
+options: 
+    no extra options.

@@ -103,6 +103,12 @@ public class JoaoRicardo {
     }
     
     public void ls(String... args) {
+
+        if (args.length != 1){
+            Tools.help(args[0]);
+            return;
+        }
+
         IDirectory dir = (IDirectory) vfs.read(app.currentDirectory);
         for (String key : dir.files.keySet()) {
             Inode file = dir.files.get(key);

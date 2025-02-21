@@ -1,0 +1,7 @@
+usage:
+    exit
+
+    Exit from application
+
+options: 
+    -s : save the virtual file system to disk.

@@ -6,8 +6,8 @@ public class Application implements Constants {
 	
 	private static boolean exit = false;
 	private static boolean saveFiles = false;
-	private static boolean skipLogin = true;
-	private static boolean displayMOTD = false;
+	private static boolean skipLogin = false;
+	private static boolean displayMOTD = true;
 	
 	public String currentDirectory;
 	public static User currentUser;
@@ -142,7 +142,7 @@ public class Application implements Constants {
 	}
 	
 	public void exit(String... args) {
-		if (args.length > 1 && args[1].equals("save")) {
+		if (args.length > 1 && args[1].equals("-s")) {
 			saveFiles = true;
 		}
 		

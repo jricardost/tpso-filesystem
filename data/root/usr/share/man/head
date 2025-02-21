@@ -1,0 +1,8 @@
+usage:
+    head <file>
+    head <file> <n>
+
+    Print first lines of a file.
+
+options: 
+    - n : output the first n lines, instead of the first 10 (default)

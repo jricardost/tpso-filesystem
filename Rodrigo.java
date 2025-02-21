@@ -37,7 +37,6 @@ public class Rodrigo {
                 System.out.println("Invalid owner id: " + owner);
                 return;
             }
-            System.out.println("Owner for " + filePath + " changed to " + owner);
         } else {
             System.out.println("File not found: " + filePath);
         }

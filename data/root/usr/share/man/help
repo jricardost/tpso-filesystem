@@ -1,0 +1,28 @@
+cat         Print a file content.
+cd          Change directory. 
+chmod       Change permissions of a file or directory.
+chown       Change the ownder of a file.
+cp          Copies a file. 
+diff        Compare files line by line.
+du          Print a file or directory size.
+echo        Print text to screen.
+exit        Exit from application
+find        Search for a file in a specific path.
+grep        Search for a specific text in a file.
+head        Print first lines of a file.
+history     Print command history.
+ls          List files in a directory.
+mkdir       Create a directory.
+mv          Moves a file to another location.
+pwd         Prints current working directory.
+rename      Rename a file.
+rm          Remove a file.
+rmdir       Remove a directory if empty.
+stat        Print stats for a file.
+tail        Print last lines of a file.
+touch       Create a new file.
+tree        Print the current directory tree.
+unzip       Unzips the specified file.
+zip         Compresses files to a zip.
+
+Details for each command using <command> --help

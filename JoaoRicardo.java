@@ -12,7 +12,7 @@ public class JoaoRicardo {
         this.vfs = vfs;
     }
     
-    public void diff(String... args) {
+    public void diff(String ... args) {
         Inode file1;
         Inode file2;
         
@@ -56,20 +56,23 @@ public class JoaoRicardo {
             lineB = contentB[i];
             
             if (!lineA.equals(lineB)) {
-                System.out.println(String.format("line %d:\t%s\n\t%s", i, lineA, lineB));
+                System.out.println(String.format("line %d:\t%s\n\t%s", i+1, lineA, lineB));
             }
         }
         
     }
     
-    public void echo(String... args) {
-
-        if (args.length != 4) {
-            Tools.help(args[0]);
+    public void echo(String ... args) {
+        
+        if (!args[args.length - 2].equals(">") && !args[args.length - 2].equals(">>")){
+            for (int i = 1; i < args.length; i++){
+                System.out.println(args[i]);
+            }
             return;
         }
         
-        String fileName = args[3];
+        String fileName = args[args.length - 1]; //ultimo argumento
+        String operator = args[args.length - 2]; //penultimo argumento
         
         Inode node = vfs.read(fileName);
         
@@ -85,37 +88,57 @@ public class JoaoRicardo {
         
         IFile file = (IFile) node;
         
-        switch(args[2]){
+        String input = "";
+        String[] content = Arrays.copyOfRange(args, 1, args.length - 2);
+        
+        for (String s : content){
+            input += s + " ";
+        }
+        
+        switch(operator){
             case ">" :
-            file.setContent(new String[] {args[1]});
+            // file.setContent(new String[] {args[1]});
+            file.setContent(new String[] {input});
             break;
             
             case ">>":
-            String[] content = Arrays.copyOf(file.getContent(), file.getContent().length + 1);
-            content[content.length - 1] = args[1];
+            content = Arrays.copyOf(file.getContent(), file.getContent().length + 1);
+            content[content.length - 1] = input;
             file.setContent(content);
-            break;
-            
-            default: 
-            for (String s : args) System.out.println(s + " ");
             break;
         }
     }
     
-    public void ls(String... args) {
-
-        if (args.length != 1){
+    public void ls(String ... args) {
+        
+        if (args.length > 2 || (args.length == 2 && !args[1].equals("-l"))){
             Tools.help(args[0]);
             return;
         }
 
         IDirectory dir = (IDirectory) vfs.read(app.currentDirectory);
-        for (String key : dir.files.keySet()) {
-            Inode file = dir.files.get(key);
-            System.out.print(Tools.getPermissionsString(file.type, file.permissions) + " - ");
-            System.out.print((Application.uac.getUser(file.owner)).name() + " ");
-            System.out.print(file.creationDate + " ");
-            System.out.print(file.name + "\n");
+        
+        if (args.length == 1){
+            
+            for (String key : dir.files.keySet()) {
+                Inode file = dir.files.get(key);
+                System.out.print(file.name + "\t");
+            }
+            System.out.println();
+            return;
+        }
+
+        if (args.length == 2){
+            
+            for (String key : dir.files.keySet()) {
+                Inode file = dir.files.get(key);
+                System.out.print(Tools.getPermissionsString(file.type, file.permissions) + " - ");
+                System.out.print((Application.uac.getUser(file.owner)).name() + " ");
+                System.out.print(file.creationDate + " ");
+                System.out.print(file.name + "\n");
+            }
+            System.out.println();
+            return;
         }
     }
     
@@ -124,15 +147,15 @@ public class JoaoRicardo {
             Tools.help(args[0]);
             return;
         }
-
+        
         String path = args[1];
-
+        
         if (path.charAt(0) == '/') path = path.substring(1);
-
+        
         String[] split = path.split("/");
-
+        
         IDirectory currentDir = (IDirectory) vfs.read(app.currentDirectory);
-
+        
         for (int i = 0; i < split.length; i++) {
             IDirectory dir = new IDirectory(app.currentDirectory + "/" + split[i]);
             currentDir.files.put(dir.name, dir);

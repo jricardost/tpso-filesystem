@@ -25,7 +25,6 @@ public class Mariana {
 
 			if (inode != null) {
 				inode.permissions = permissions;
-				System.out.println("Permissions for " + filePath + " changed to " + permissionStr);
 			} else {
 				System.out.println("File not found: " + filePath);
 			}
@@ -44,24 +43,30 @@ public class Mariana {
 		String sourcePath = args[1];
 		String destinationPath = args[2];
 
-		Inode destination = vfs.read(destinationPath);
 		Inode source = vfs.read(sourcePath);
+		Inode destination = vfs.read(destinationPath);
 
 		if (source == null) {
 			System.out.println("Source not found: " + sourcePath);
 			return;
 		}
 
-		if (destination != null && source.getClass() != destination.getClass()) {
+		if (destination != null && (source instanceof IDirectory && destination instanceof IFile)) {
 			System.out.println("Source and destination must be of the same type (file or directory).");
 			return;
 		}
 
-		if (vfs.read(destinationPath.substring(0, destinationPath.lastIndexOf("/"))) == null) {
-			System.out.println("Destination directory not found: " + destinationPath);
+		if (destination == null){
+			System.out.println("dest null");
+			// app.execute("touch", destinationPath);
+			destinationPath.substring(0, destinationPath.lastIndexOf("/"));
 		}
 
-		app.execute("touch", destinationPath);
+		// if (vfs.read(destinationPath.substring(0, destinationPath.lastIndexOf("/"))) == null) {
+		// 	System.out.println("Destination directory not found: " + destinationPath);
+		// }
+
+		
 
 		IFile sourceFile = (IFile) source;
 		IFile newFile = (IFile) vfs.read(destinationPath);
@@ -74,13 +79,17 @@ public class Mariana {
 			return;
 		}
 
-		if (args.length == 1) {
+		if (args[1].equals("/")){
 			app.currentDirectory = "/";
 			return;
 		}
 
 		if (args[1].equals("..")) {
-			app.currentDirectory = app.currentDirectory.substring(0, app.currentDirectory.lastIndexOf("/"));
+			if (app.currentDirectory.lastIndexOf("/") != 0){
+				app.currentDirectory = app.currentDirectory.substring(0, app.currentDirectory.lastIndexOf("/"));
+			} else {
+				app.currentDirectory = "/";
+			}
 			return;
 		}
 
@@ -92,7 +101,7 @@ public class Mariana {
 			return;
 		}
 
-		app.currentDirectory = app.currentDirectory + '/' + directoryPath;
+		app.currentDirectory = Tools.validatePath(app.currentDirectory + '/' + directoryPath);
 	}
 
 	public void rename(String... args) {

@@ -4,4 +4,4 @@ usage:
    List files in a directory.
 
 options: 
-    no extra options.
+    -l show detailed information.

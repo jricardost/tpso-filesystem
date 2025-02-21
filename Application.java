@@ -6,8 +6,8 @@ public class Application implements Constants {
 	
 	private static boolean exit = false;
 	private static boolean saveFiles = false;
-	private static boolean skipLogin = false;
-	private static boolean displayMOTD = true;
+	private static boolean skipLogin = true;
+	private static boolean displayMOTD = false;
 	
 	public String currentDirectory;
 	public static User currentUser;
@@ -50,7 +50,11 @@ public class Application implements Constants {
 			
 			try {
 				System.out.print(String.format("%s@tpso:%s $ ", currentUser.name(),
+				
 				(currentDirectory == currentUser.homeDir()) ? "~" : currentDirectory));
+				
+				currentDirectory = Tools.validatePath(currentDirectory);
+
 				cmdline = input.nextLine();
 				arguments = cmdline.split(" ");
 				
@@ -114,6 +118,10 @@ public class Application implements Constants {
 			System.out.println("method not found");
 			return;
 		}
+	}
+
+	public void help(String ... args){
+		Tools.help("help");
 	}
 	
 	public void login(String... args) {

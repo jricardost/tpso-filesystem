@@ -65,9 +65,19 @@ public final class Tools implements Constants {
         
         String[] help = readApplicationFile("/usr/share/man/" + cmd);
         
+
+        if (help == null){
+            System.out.println("command not found");
+            return;
+        }
+
+        System.out.println();
+
         for (String s : help){
             System.out.println(s);
         }
+
+        System.out.println();
     }
     
     public static String[] readApplicationFile(String path){
@@ -133,5 +143,12 @@ public final class Tools implements Constants {
         } catch (NoSuchAlgorithmException nsae){}
         
         return "";
+    }
+
+    public static String validatePath(String path) {
+        String res = path;
+        res = res.replace("///", "/");
+        res = res.replace("//", "/");
+        return res;
     }
 }

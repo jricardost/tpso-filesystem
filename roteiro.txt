@@ -1,0 +1,54 @@
+mkdir projeto
+cd projeto
+mkdir src 
+mkdir docs
+tree 
+rename docs documentacao
+tree
+rmdir documentacao
+ls
+
+cd src
+touch main.c
+echo #include <stdio.h> > main.c
+echo int main() { return 0; } >> main.c
+cat main.c
+head main.c 2
+tail main.c 1
+wc main.c
+cp main.c main_backup.c
+mv main_backup.c main_old.c
+diff main.c main_old.c
+rm main_old.c
+
+pwd
+
+cd src
+touch exemplo.txt
+echo 'Esta é uma linha de teste.' > exemplo.txt
+find . -name exemplo.txt
+grep 'teste' exemplo.txt
+
+ls
+chmod 000 exemplo.txt
+ls 
+chmod 755 exemplo.txt
+ls
+chown usuario exemplo.txt
+ls
+
+stat exemplo.txt
+du ..
+
+
+cd ..
+mkdir conteudo
+cd conteudo
+touch arquivo1.txt arquivo2.txt
+echo 'Conteúdo do arquivo 1' > arquivo1.txt
+echo 'Conteúdo do arquivo 2' > arquivo2.txt
+zip arquivos.zip arquivo1.txt arquivo2.txt
+mkdir extraido
+unzip arquivos.zip
+mv arquivo2.txt extraido/
+cp arquivo1.txt extraido/

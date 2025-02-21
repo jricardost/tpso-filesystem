@@ -146,6 +146,10 @@ public class VirtualFileSystem implements Constants {
         Inode node;
         String filePath = path;
 
+        if (path.equals("/")){
+            return root;
+        }
+
         // System.out.println("fileRequest: " + validatePath(filePath));
         node = get(validatePath(filePath), Application.currentUser);
 

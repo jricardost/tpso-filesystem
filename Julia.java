@@ -164,7 +164,7 @@ public class Julia {
                 return;
             }
 
-            content.add(node.name);
+            content.add("f: " + node.name);
             for (String line : ((IFile) node).getContent()) {
                 content.add(line);
             }

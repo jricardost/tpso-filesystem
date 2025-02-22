@@ -1,0 +1,8 @@
+usage:
+    du
+    du <file>
+
+    Print a file or directory size.
+
+options: 
+    no extra options.

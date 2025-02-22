@@ -1,0 +1,7 @@
+usage:
+    cat <file>
+
+    Print a file content.
+
+options: 
+    no extra options.

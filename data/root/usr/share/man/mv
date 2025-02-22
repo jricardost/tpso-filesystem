@@ -1,0 +1,7 @@
+usage:
+   mv <source> <destination>
+   
+   Moves a file to another location.
+
+options: 
+    no extra options.

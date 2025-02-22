@@ -30,13 +30,13 @@ public final class Tools implements Constants {
     
     public static String timeStamp() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", new Locale("en", "US"));
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-3"));
         return simpleDateFormat.format(new Date());
     }
     
     public static String timeStamp(String stampFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(stampFormat, new Locale("en", "US"));
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-3"));
         return simpleDateFormat.format(new Date());
     }
     
@@ -65,9 +65,19 @@ public final class Tools implements Constants {
         
         String[] help = readApplicationFile("/usr/share/man/" + cmd);
         
+
+        if (help == null){
+            System.out.println("command not found");
+            return;
+        }
+
+        System.out.println();
+
         for (String s : help){
             System.out.println(s);
         }
+
+        System.out.println();
     }
     
     public static String[] readApplicationFile(String path){
@@ -75,7 +85,7 @@ public final class Tools implements Constants {
     }
     
     public static String[] readApplicationFile(String path, boolean keepComments){
- 
+        
         try {
             ArrayList<String> lines = new ArrayList<String>();
             
@@ -94,18 +104,23 @@ public final class Tools implements Constants {
             return lines.toArray(new String[lines.size()]);
             
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         } 
         
         return null;
     }
     
     public static void saveApplicationFile(String path, String[] content){
-
+        
+        
         File file = new File(new File("data/root").getAbsolutePath() + path);
-        System.out.println(file.getAbsolutePath());
+        System.out.println("saving: " + file.getAbsolutePath());
+        
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            if (content == null) return;
             for (String line : content) {
                 writer.write(line);  // Write each line
                 writer.newLine();  // Add a new line after each string
@@ -128,5 +143,12 @@ public final class Tools implements Constants {
         } catch (NoSuchAlgorithmException nsae){}
         
         return "";
+    }
+
+    public static String validatePath(String path) {
+        String res = path;
+        res = res.replace("///", "/");
+        res = res.replace("//", "/");
+        return res;
     }
 }

@@ -1,0 +1,7 @@
+usage:
+    rm <file>
+
+    Remove a file.
+
+options: 
+    no extra options.

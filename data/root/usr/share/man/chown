@@ -1,0 +1,7 @@
+usage:
+    chown <ownner> <file>
+
+    Change the ownder of a file.
+
+options: 
+    no extra options.

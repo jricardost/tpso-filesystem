@@ -1,0 +1,7 @@
+usage:
+    cd <directory>
+
+    Change directory.    
+
+options: 
+    no extra options.

@@ -1,0 +1,7 @@
+usage:
+    tree
+
+    Print the current directory tree.
+
+options: 
+    no extra options.

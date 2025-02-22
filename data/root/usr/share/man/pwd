@@ -1,0 +1,7 @@
+usage:
+   pwd
+   
+   Prints current working directory.
+
+options: 
+    no extra options.

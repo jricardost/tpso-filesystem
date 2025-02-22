@@ -1,0 +1,7 @@
+usage:
+    rename <old_name> <rew_name>
+
+    Rename a file.
+
+options: 
+    no extra options.

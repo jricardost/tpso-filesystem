@@ -1,0 +1,7 @@
+usage:
+   zip <name> <files ... >
+   
+   Compresses files to a zip.
+
+options: 
+    no extra options.

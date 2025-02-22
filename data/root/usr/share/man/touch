@@ -1,0 +1,7 @@
+usage:
+   touch <filename>
+   
+   Create a new file.
+
+options: 
+    no extra options.
